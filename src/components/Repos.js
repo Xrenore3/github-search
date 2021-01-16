@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GithubContext } from '../context/context';
-import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
+import { Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
 const Repos = () => {
   const { repos } = React.useContext(GithubContext);
   const languages = repos.reduce((total, item) => {
@@ -20,19 +20,38 @@ const Repos = () => {
     }
     return total
   }, {})
+  // language
   const mostUsedLanguage = Object.values(languages);
 
-  const mostPorularLanguage = Object.values(languages).map(item=>{
-    const {label,stars} = item;
-    return {label,value:stars}
+  // stars per language
+  const mostPorularLanguage = Object.values(languages).map(item => {
+    const { label, stars } = item;
+    return { label, value: stars }
   })
-  console.log(mostUsedLanguage)
-  console.log(mostPorularLanguage)
+  // stars, forks
+  let { stars, forks } = repos.reduce(
+    (total, item) => {
+      const { stargazers_count, name, forks } = item;
+      total.stars[stargazers_count] = { label: name, value: stargazers_count };
+      total.forks[stargazers_count] = { label: name, value: forks };
+
+      return total
+    },
+    {
+      stars: {},
+      forks: {}
+    }
+  )
+  stars = Object.values(stars).slice(-5).reverse();
+  forks = Object.values(forks).sort((a,b)=>{
+    return a.value-b.value}).slice(-5).reverse();
+
   return <section className='section'>
     <Wrapper className='section-center'>
       <Pie3D data={mostUsedLanguage} />
-      <Column3D data={mostUsedLanguage}/>
+      <Column3D data={stars} />
       <Doughnut2D data={mostPorularLanguage} />
+      <Bar3D data={forks} />
     </Wrapper>
   </section>;
 };
