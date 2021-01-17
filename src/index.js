@@ -5,13 +5,21 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { GithubProvider } from './context/context';
 import { Auth0Provider } from '@auth0/auth0-react';
+// xrenore3.eu.auth0.com
+// Zoh4oGp5YzGu8mAgrvI1hEM72b1XTY5i
 
 ReactDOM.render(
-  <React.StrictMode>
-    <GithubProvider>
-      <App />
-    </GithubProvider>
-  </React.StrictMode>,
+  <Auth0Provider
+    domain = 'xrenore3.eu.auth0.com'
+    clientId = "Zoh4oGp5YzGu8mAgrvI1hEM72b1XTY5i"
+    redirectUri = {window.location.origin}
+    cacheLocation='localstorage'>
+    <React.StrictMode>
+      <GithubProvider>
+        <App />
+      </GithubProvider>
+    </React.StrictMode>
+  </Auth0Provider>,
   document.getElementById('root')
 );
 
