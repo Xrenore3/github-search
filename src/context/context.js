@@ -19,7 +19,7 @@ const GithubProvider = ({ children }) => {
     const [requests, setRequests] = useState('...wait');
     //error
     const [error, setError] = useState({ show: false, msg: '' });
-
+    // API requests
     const searchGithubUser = async (user) => {
         setIsLoading(true)
         toggleError();
